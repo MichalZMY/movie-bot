@@ -48,12 +48,12 @@ const movieGenres = [
 ];
 
 function getGenreId(genre) {
-  const genre = movieGenres.find(function(elem) {
+  const row = movieGenres.find(function(elem) {
     return elem.name === genre;
   });
 
-  if (genre) {
-    return genre.id;
+  if (row) {
+    return row.id;
   }
   return null;
 }
