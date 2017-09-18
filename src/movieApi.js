@@ -9,12 +9,15 @@ function discoverMovie(genreId) {
 }
 
 function moviedbApiCall(genreId) {
-  return axios.get(`https://api.themoviedb.org/3/discover/movie`, {
-    api_key: config.MOVIEDB_TOKEN,
-    sort_by: 'popularity.desc',
-    include_adult: false,
-    with_genres: genreId,
-  });
+  return axios
+    .get(`https://api.themoviedb.org/3/discover/movie`, {
+      params: {
+        api_key: config.MOVIEDB_TOKEN,
+        sort_by: 'popularity.desc',
+        include_adult: false,
+        with_genres: genreId,
+      },
+    });
 }
 
 function apiResultToCarousselle(results) {
