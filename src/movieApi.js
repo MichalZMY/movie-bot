@@ -4,20 +4,19 @@ const config = require('./config');
 
 function discoverMovie(genreId) {
   return moviedbApiCall(genreId).then(response =>
-    apiResultToCarousselle(response.data.results),
+    apiResultToCarousselle(response.data.results)
   );
 }
 
 function moviedbApiCall(genreId) {
-  return axios
-    .get(`https://api.themoviedb.org/3/discover/movie`, {
-      params: {
-        api_key: config.MOVIEDB_TOKEN,
-        sort_by: 'popularity.desc',
-        include_adult: false,
-        with_genres: genreId,
-      },
-    });
+  return axios.get(`https://api.themoviedb.org/3/discover/movie`, {
+    params: {
+      api_key: config.MOVIEDB_TOKEN,
+      sort_by: 'popularity.desc',
+      include_adult: false,
+      with_genres: genreId,
+    },
+  });
 }
 
 function apiResultToCarousselle(results) {
