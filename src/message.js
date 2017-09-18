@@ -41,8 +41,28 @@ function onNewMessage(message) {
 }
 
 function startMovieFlow(message, conversation) {
+  const genre = conversation.getMemory('genre');
+
+  if (!genre) {
+    const buttons = constants.movieGenresQuick.map(function(genre) {
+      return { title: genre.name, value: genre.name };
+    });
+
+    return message.reply([
+      {
+        type: 'quickReplies',
+        content: {
+          title: 'What genre of movies do you like?',
+          buttons,
+        },
+      },
+    ]);
+  }
+
+  const genreId = constants.getGenreId(genre.value);
+
   return movieApi
-    .discoverMovie()
+    .discoverMovie(genreId)
     .then(function(carouselle) {
       return message.reply(carouselle);
     })
