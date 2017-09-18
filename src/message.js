@@ -6,11 +6,48 @@ const constants = require('./constants');
 
 function onNewMessage(message) {
   const text = message.content;
+  const senderId = message.senderId;
 
   console.log('The bot received: ', text);
-  return message.reply([{ type: 'text', content: 'Hello world!' }])
+
+  return recastBot.request
+    .converseText(text, { conversationToken: senderId })
+    .then(function(conversation) {
+      const action = conversation.action;
+
+      if (!action) {
+        return message
+          .reply([{ type: 'text', content: "I don't have an action for this sentence!" }])
+          .catch(function(err) {
+            console.error('message::reply error: ', err);
+          });
+      }
+
+      if (conversation.action.slug === 'discover') {
+        return startMovieFlow(message, conversation);
+      }
+
+      conversation.replies.forEach(function(reply) {
+        message.addReply({ type: 'text', content: reply });
+      });
+
+      return message.reply().catch(function(err) {
+        console.error('message::reply error: ', err);
+      });
+    })
     .catch(function(err) {
-      console.error('message::reply error: ', err);
+      console.error('Recast::request::converseText error: ', err);
+    });
+}
+
+function startMovieFlow(message, conversation) {
+  return movieApi
+    .discoverMovie()
+    .then(function(carouselle) {
+      return message.reply(carouselle);
+    })
+    .catch(function(err) {
+      console.error('movieApi::discoverMovie error: ', err);
     });
 }
 
