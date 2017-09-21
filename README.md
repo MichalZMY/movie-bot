@@ -17,8 +17,6 @@ We recommend to use at least `node v4.3.0`
 
 #### Installation
 
-`git clone https://github.com/RecastAI/starter-NodeJS.git my-bot && cd my-bot`
-
 using npm
 `npm install`
 
